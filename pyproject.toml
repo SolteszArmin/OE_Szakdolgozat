@@ -20,6 +20,7 @@ torch_scatter={version="2.1.2",source="pyg"}
 torch_sparse={version="0.6.18",source="pyg"}
 torch_cluster={version="1.6.3",source="pyg"}
 torch_spline_conv={version="1.2.2",source="pyg"}
+matplotlib = "^3.9.2"
 
 [[tool.poetry.source]]
 name = "torch"
