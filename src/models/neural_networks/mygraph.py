@@ -1,54 +1,53 @@
 import torch
 import torch.nn.functional as F
-from torch_geometric.nn import GCNConv  # Graph Convolutional Network Layer
+from torch_geometric.nn import GCNConv, LayerNorm
 
-class GNN(torch.nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim):
+
+class GNNLayer(torch.nn.Module):
+    def __init__(self, input_dim, hidden_dim):
         """
-        Initializes the GNN model.
-        
+        GNN layer for spatial feature extraction.
+
         Parameters:
-        - input_dim: Dimension of input features (RNN output for each node).
-        - hidden_dim: Dimension of hidden layers in the GNN.
-        - output_dim: Dimension of output layer (number of classes for classification).
+        - input_dim: The dimensionality of the input node features.
+        - hidden_dim: The dimensionality of the hidden GNN layers.
         """
-        super(GNN, self).__init__()
+        super(GNNLayer, self).__init__()
         
-        # First graph convolutional layer
-        self.conv1 = GCNConv(input_dim, hidden_dim)
+        # Define three GCNConv layers
+        self.gnn1 = GCNConv(input_dim, hidden_dim)
+        self.norm1 = LayerNorm(hidden_dim)
         
-        # Second graph convolutional layer
-        self.conv2 = GCNConv(hidden_dim, hidden_dim)
+        self.gnn2 = GCNConv(hidden_dim, hidden_dim)
+        self.norm2 = LayerNorm(hidden_dim)
         
-        # Linear layer for classification
-        self.classifier = torch.nn.Linear(hidden_dim, output_dim)
-    
-    def forward(self, x, edge_index, ego_index):
+        self.gnn3 = GCNConv(hidden_dim, hidden_dim)
+        self.norm3 = LayerNorm(hidden_dim)
+
+    def forward(self, x, edge_index):
         """
-        Forward pass through the GNN.
-        
+        Forward pass through the GNN layer.
+
         Parameters:
         - x: Node feature matrix of shape [num_nodes, input_dim].
-             Each row is a feature vector for a node (output from RNN).
-        - edge_index: Edge list of shape [2, num_edges].
-                      Defines the connectivity (graph structure).
-        - ego_index: Index of the ego-vehicle node (single integer).
-        
-        Returns:
-        - logits: Output logits for classification of ego-vehicle maneuver.
-        """
-        # First graph convolution + activation
-        x = self.conv1(x, edge_index)
-        x = F.relu(x)
+        - edge_index: Edge list defining graph connectivity (shape [2, num_edges]).
 
-        # Second graph convolution + activation
-        x = self.conv2(x, edge_index)
-        x = F.relu(x)
-        
-        # Extract embedding for the ego-vehicle node
-        ego_embedding = x[ego_index]
-        
-        # Classification layer
-        logits = self.classifier(ego_embedding)
-        
-        return logits
+        Returns:
+        - x: Updated node embeddings of shape [num_nodes, hidden_dim].
+        """
+        # First GNN layer
+        x = self.gnn1(x, edge_index)
+        x = self.norm1(x)
+        x = F.leaky_relu(x, negative_slope=0.1)
+
+        # Second GNN layer
+        x = self.gnn2(x, edge_index)
+        x = self.norm2(x)
+        x = F.leaky_relu(x, negative_slope=0.1)
+
+        # Third GNN layer
+        x = self.gnn3(x, edge_index)
+        x = self.norm3(x)
+        x = F.leaky_relu(x, negative_slope=0.1)
+
+        return x
