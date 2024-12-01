@@ -1,0 +1,195 @@
+import torch
+# PyTorch Geometric imports
+from torch_geometric.data import Data
+import json
+
+# For debugging or general utilities (optional)
+
+class DatasetProcessing():
+    def __init__(self):
+        with open("mapper.json","r") as f:
+            self.mapper_d=json.load(f)
+    
+    def create_graph_array_basic(self,train_d: dict) -> list:
+        graph_list = []
+        for k, v in train_d.items():
+            nodes = torch.tensor([], dtype=torch.float)
+            edge_indexes = torch.tensor([[], []], dtype=torch.long)
+            edge_features = torch.tensor([], dtype=torch.float)
+            k = str(k)
+            v = dict(v)
+            ego = v.pop("ego_vehicle")
+            ego_pos = ego["position"]
+            ego_wayp = ego["waypoint_location"]
+            ego_node = torch.tensor(
+                [
+                    [
+                        ego_pos["x"],
+                        ego_pos["y"],
+                        ego_pos["z"],
+                        ego_wayp["x"],
+                        ego_wayp["y"],
+                        ego_wayp["z"],
+                        ego["speed"],
+                        0,
+                        0,
+                        0,
+                    ]
+                ],
+                dtype=torch.float,
+            )
+            nodes = torch.cat((nodes, ego_node), dim=0)
+            index = 1
+            for key, value in v.items():
+                exo_pos = value["Position"]
+                exo_rotation = value["Rotation"]
+                exo_velocity = value["Velocity"]
+                exo_rel_pos = value["relative_position"][0]
+                exo_rel_dir = value["relative_direction"]
+                exo_node = torch.tensor(
+                    [
+                        [
+                            exo_pos["x"],
+                            exo_pos["y"],
+                            exo_pos["z"],
+                            exo_rotation["pitch"],
+                            exo_rotation["yaw"],
+                            exo_rotation["roll"],
+                            value["Speed"],
+                            exo_velocity["x"],
+                            exo_velocity["y"],
+                            exo_velocity["z"],
+                        ]
+                    ],
+                    dtype=torch.float,
+                )
+                nodes = torch.cat((nodes, exo_node), dim=0)
+                e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
+                edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
+                e_attribute = torch.tensor(
+                    [
+                        [
+                            exo_rel_pos["x"],
+                            exo_rel_pos["y"],
+                            exo_rel_pos["z"],
+                            exo_rel_dir["x"],
+                            exo_rel_dir["y"],
+                            exo_rel_dir["z"],
+                        ]
+                    ],
+                    dtype=torch.float,
+                )
+                edge_features = torch.cat((edge_features, e_attribute), dim=0)
+                edge_features = torch.cat((edge_features, e_attribute), dim=0)
+
+                index += 1
+                graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
+                graph_list.append(graph)
+
+        return graph_list
+    
+
+    def modified(self,train_d: dict):
+        # label list is a list of tuple(nextdir, [lanechange,turn])
+        graph_list = []
+        label_list=[]
+        for k, v in train_d.items():
+            nodes = torch.tensor([], dtype=torch.float)
+            edge_indexes = torch.tensor([[], []], dtype=torch.long)
+            edge_features = torch.tensor([], dtype=torch.float)
+            k = str(k)
+            v = dict(v)
+            ego = v.pop("vehicle EGO",False)
+            ego_rotation=ego["Rotation"]
+            ego_position=ego["Position"]
+            ego_velocity=ego["Velocity"]
+            ego_trafic_l_state=self.mapper_d[ego["Traffic_Light_State"]]
+
+            ego_lanechange= 1 if ego["Lanechange"] else 0
+            ego_turn= 1 if ego["Turn"] else 0
+            ego_next_dir=self.mapper_d[ego["Next_direction"]]
+
+            label_list.append((ego_next_dir,[ego_lanechange, ego_turn]))
+
+            ego_node = torch.tensor(
+                [
+                    [
+                        ego_rotation["pitch"],
+                        ego_rotation["yaw"],
+                        ego_rotation["roll"],
+                        ego_position["x"],
+                        ego_position["y"],
+                        ego_position["z"],
+                        ego_velocity["x"],
+                        ego_velocity["y"],
+                        ego_velocity["z"],
+                        ego["speed"],
+                        ego_trafic_l_state,
+                        0,
+                        0
+                    ]
+                ],
+                dtype=torch.float,
+            )
+            nodes = torch.cat((nodes, ego_node), dim=0)
+            index = 1
+            for key, value in v.items():
+                exo_rotation=value["Rotation"]
+                exo_position=value["relative_position"][0]
+                exo_velocity=value["Velocity"]
+                exo_relative_location=self.mapper_d[value["relative_location"]]
+                exo_relative_movement_dir=self.mapper_d[value["relative_movement_direction"]]
+                exo_trafic_l_state=self.mapper_d[value["Traffic_Light_State"]]
+
+                exo_position_edge=value["position"]
+
+                exo_node = torch.tensor(
+                    [
+                        [
+                            exo_rotation["pitch"],
+                            exo_rotation["yaw"],
+                            exo_rotation["roll"],
+                            exo_position["x"],
+                            exo_position["y"],
+                            exo_position["z"],
+                            exo_velocity["x"],
+                            exo_velocity["y"],
+                            exo_velocity["z"],
+                            value["Speed"],
+                            exo_trafic_l_state,
+                            exo_relative_location,
+                            exo_relative_movement_dir
+                        ]
+                    ],
+                    dtype=torch.float,
+                )
+                nodes = torch.cat((nodes, exo_node), dim=0)
+                e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
+                edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
+                e_attribute = torch.tensor(
+                    [
+                        [
+                            exo_position_edge["x"],
+                            exo_position_edge["y"],
+                            exo_position_edge["z"],
+                        ]
+                    ],
+                    dtype=torch.float,
+                )
+                edge_features = torch.cat((edge_features, e_attribute), dim=0)
+                edge_features = torch.cat((edge_features, e_attribute), dim=0)
+
+                index += 1
+            graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
+            graph_list.append(graph)
+
+        return graph_list, label_list
+    
+    def create_sequences(self,graph_array,sequence_length):
+        sequences = [graph_array[i:i + sequence_length] for i in range(0, len(graph_array), sequence_length)]
+        return sequences
+    
+    def create_sequence_and_labels(self,graph_array,label_list,sequence_length):
+        sequences = [graph_array[i:i + sequence_length] for i in range(0, len(graph_array), sequence_length)]
+        labels=label_list[::sequence_length]
+        return sequences,labels

@@ -1,0 +1,26 @@
+{
+    "back left": 0,
+    "back right": 1,
+    "back straight": 2,
+    "front left": 3,
+    "front right": 4,
+    "front straight": 5,
+
+    "towards":0,
+    "away":1,
+
+    "hard front right": 0,
+    "hard back right": 1,
+    "hard front left": 2,
+    "hard back left ": 3,
+    "slight front right": 4,
+    "slight back right": 5,
+    "slight front left": 6,
+    "slight back left": 7,
+    "straight front": 8,
+    "straight back": 9,
+
+    "None":0,
+    "Red":1,
+    "Green":2
+}
