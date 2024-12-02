@@ -1,26 +1,35 @@
 {
-    "back left": 0,
-    "back right": 1,
-    "back straight": 2,
-    "front left": 3,
-    "front right": 4,
-    "front straight": 5,
-
-    "towards":0,
-    "away":1,
-
-    "hard front right": 0,
-    "hard back right": 1,
-    "hard front left": 2,
-    "hard back left ": 3,
-    "slight front right": 4,
-    "slight back right": 5,
-    "slight front left": 6,
-    "slight back left": 7,
-    "straight front": 8,
-    "straight back": 9,
-
-    "None":0,
-    "Red":1,
-    "Green":2
+    "relative_location": {
+        "back left": 0,
+        "back right": 1,
+        "back straight": 2,
+        "left front": 3,
+        "front right": 4,
+        "front straight": 5,
+        "front left": 6
+    },
+    "relative_movement_direction": {
+        "towards": 0,
+        "away": 1
+    },
+    "Next_direction": {
+        "hard right front": 0,
+        "hard right back": 1,
+        "hard left front": 2,
+        "hard left back": 3,
+        "slight right front": 4,
+        "slight right back": 5,
+        "slight left front": 6,
+        "slight left back": 7,
+        "straight front": 8,
+        "straight back": 9,
+        "left front": 11,
+        "right front": 12
+    },
+    "Traffic_Light_State": {
+        "None": 0,
+        "Red": 1,
+        "Green": 2,
+        "Yellow": 3
+    }
 }

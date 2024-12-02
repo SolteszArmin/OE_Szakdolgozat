@@ -9,6 +9,7 @@ class DatasetProcessing():
     def __init__(self):
         with open("mapper.json","r") as f:
             self.mapper_d=json.load(f)
+        
     
     def create_graph_array_basic(self,train_d: dict) -> list:
         graph_list = []
@@ -82,7 +83,15 @@ class DatasetProcessing():
                 edge_features = torch.cat((edge_features, e_attribute), dim=0)
                 edge_features = torch.cat((edge_features, e_attribute), dim=0)
 
-                index += 1
+
+                # num_nodes = nodes.size(0)
+                # edges = torch.cartesian_prod(torch.arange(num_nodes), torch.arange(num_nodes))
+                # edges_no_self = edges[edges[:, 0] != edges[:, 1]]
+                # edge_attributes = torch.ones(edges_no_self.size(0), dtype=torch.float)
+                # index += 1
+                # graph = Data(x=nodes, edge_index=edges_no_self, edge_attr=edge_attributes)
+
+
                 graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
                 graph_list.append(graph)
 
@@ -103,11 +112,11 @@ class DatasetProcessing():
             ego_rotation=ego["Rotation"]
             ego_position=ego["Position"]
             ego_velocity=ego["Velocity"]
-            ego_trafic_l_state=self.mapper_d[ego["Traffic_Light_State"]]
+            ego_trafic_l_state=self.mapper_d["Traffic_Light_State"][ego["Traffic_Light_State"]]
 
             ego_lanechange= 1 if ego["Lanechange"] else 0
             ego_turn= 1 if ego["Turn"] else 0
-            ego_next_dir=self.mapper_d[ego["Next_direction"]]
+            ego_next_dir=self.mapper_d["Next_direction"][ego["Next_direction"]]
 
             label_list.append((ego_next_dir,[ego_lanechange, ego_turn]))
 
@@ -137,11 +146,10 @@ class DatasetProcessing():
                 exo_rotation=value["Rotation"]
                 exo_position=value["relative_position"][0]
                 exo_velocity=value["Velocity"]
-                exo_relative_location=self.mapper_d[value["relative_location"]]
-                exo_relative_movement_dir=self.mapper_d[value["relative_movement_direction"]]
-                exo_trafic_l_state=self.mapper_d[value["Traffic_Light_State"]]
+                exo_relative_location=self.mapper_d["relative_location"][value["relative_location"]]
+                exo_relative_movement_dir=self.mapper_d["relative_movement_direction"][value["relative_movement_direction"]]
+                exo_trafic_l_state=self.mapper_d["Traffic_Light_State"][value["Traffic_Light_State"]]
 
-                exo_position_edge=value["position"]
 
                 exo_node = torch.tensor(
                     [
@@ -164,23 +172,32 @@ class DatasetProcessing():
                     dtype=torch.float,
                 )
                 nodes = torch.cat((nodes, exo_node), dim=0)
-                e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
-                edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
-                e_attribute = torch.tensor(
-                    [
-                        [
-                            exo_position_edge["x"],
-                            exo_position_edge["y"],
-                            exo_position_edge["z"],
-                        ]
-                    ],
-                    dtype=torch.float,
-                )
-                edge_features = torch.cat((edge_features, e_attribute), dim=0)
-                edge_features = torch.cat((edge_features, e_attribute), dim=0)
+                # e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
+                # edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
+                # e_attribute = torch.tensor(
+                #     [
+                #         [
+                #             value["Distance_from_ego"]
+                #         ]
+                #     ],
+                #     dtype=torch.float,
+                # )
+                # edge_features = torch.cat((edge_features, e_attribute), dim=0)
+                # edge_features = torch.cat((edge_features, e_attribute), dim=0)
 
                 index += 1
-            graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
+            
+            # TEST------------------------------
+            num_nodes = nodes.size(0)
+            edges = torch.cartesian_prod(torch.arange(num_nodes), torch.arange(num_nodes))
+            edges_no_self = edges[edges[:, 0] != edges[:, 1]]
+            edges_reshaped = edges_no_self.t()
+            edge_attributes = torch.ones(edges_no_self.size(0), dtype=torch.float)
+            index += 1
+            graph = Data(x=nodes, edge_index=edges_reshaped, edge_attr=edge_attributes)
+            # TEST-------------------------
+
+            # graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
             graph_list.append(graph)
 
         return graph_list, label_list
