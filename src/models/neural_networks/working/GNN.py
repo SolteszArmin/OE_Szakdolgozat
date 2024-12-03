@@ -44,7 +44,7 @@ class GATv2SequenceModel(torch.nn.Module):
         # Aggregate node features into graph embeddings
         graph_embeddings = global_mean_pool(x, batch)  # [num_graphs_in_batch, hidden_channels]
         
-        sequence_lengths=sequence_lengths.tolist()
+        sequence_lengths
         # Reshape into sequences (batch_size x max_seq_len x hidden_channels)
         graph_sequence = pad_sequence(graph_embeddings.split(sequence_lengths), batch_first=True)
 
@@ -57,5 +57,5 @@ class GATv2SequenceModel(torch.nn.Module):
 
         # Final output layer (use last GRU state for prediction)
         out = self.fc(h_n[-1])  # Use the final GRU state (hidden state of last time step)
-        # out_bool = self.fc_bools(h_n[-1])
-        return out
+        out_bool = self.fc_bools(h_n[-1])
+        return out,out_bool

@@ -21,6 +21,9 @@ torch_sparse={version="0.6.18",source="pyg"}
 torch_cluster={version="1.6.3",source="pyg"}
 torch_spline_conv={version="1.2.2",source="pyg"}
 matplotlib = "^3.9.2"
+fastapi = "^0.115.5"
+uvicorn = "^0.32.1"
+pydantic = "^2.10.3"
 
 [[tool.poetry.source]]
 name = "torch"

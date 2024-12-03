@@ -2,13 +2,21 @@ import torch
 # PyTorch Geometric imports
 from torch_geometric.data import Data
 import json
+from api_request_types.request_models import InputFormat
+import os
 
 # For debugging or general utilities (optional)
 
 class DatasetProcessing():
     def __init__(self):
-        with open("mapper.json","r") as f:
-            self.mapper_d=json.load(f)
+        print(f"WORKING DIRECTORY::::{os.getcwd()}")
+
+        try:
+            with open("mapper.json","r") as f:
+                self.mapper_d=json.load(f)
+        except:
+            with open(os.path.join(os.getcwd(),"models","neural_networks","working","mapper.json"),"r") as f:
+                self.mapper_d=json.load(f)
         
     
     def create_graph_array_basic(self,train_d: dict) -> list:
@@ -201,6 +209,77 @@ class DatasetProcessing():
             graph_list.append(graph)
 
         return graph_list, label_list
+    
+    def create_graph_from_api(self, frames:InputFormat):
+        graph_list=[]
+
+        for frame in frames.frames:
+            nodes = torch.tensor([], dtype=torch.float)
+            edge_indexes = torch.tensor([[], []], dtype=torch.long)
+            edge_features = torch.tensor([], dtype=torch.float)
+            ego_node = torch.tensor(
+                [
+                    [
+                        frame.ego_rotation_pitch,
+                        frame.ego_rotation_yaw,
+                        frame.ego_rotation_roll,
+                        frame.ego_position_x,
+                        frame.ego_position_y,
+                        frame.ego_position_z,
+                        frame.ego_velocity_x,
+                        frame.ego_velocity_y,
+                        frame.ego_velocity_z,
+                        frame.ego_speed,
+                        self.mapper_d["Traffic_Light_State"][frame.ego_trafic_l_state],
+                        0,
+                        0
+                    ]
+                ],
+                dtype=torch.float,
+            )
+            nodes = torch.cat((nodes, ego_node), dim=0)
+            index = 1
+            for exo in frame.exo_vehicles:
+                exo_node = torch.tensor(
+                    [
+                        [
+                            exo.exo_rotation_pitch,
+                            exo.exo_rotation_yaw,
+                            exo.exo_rotation_roll,
+                            exo.exo_position_x,
+                            exo.exo_position_y,
+                            exo.exo_position_z,
+                            exo.exo_velocity_x,
+                            exo.exo_velocity_y,
+                            exo.exo_velocity_z,
+                            exo.exo_Speed,
+                            self.mapper_d["Traffic_Light_State"][exo.exo_trafic_l_state],
+                            self.mapper_d["relative_location"][exo.exo_relative_location],
+                            self.mapper_d["relative_movement_direction"][exo.exo_relative_movement_dir]
+                        ]
+                    ],
+                    dtype=torch.float,
+                )
+                nodes = torch.cat((nodes, exo_node), dim=0)
+                
+                e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
+                edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
+                e_attribute = torch.tensor(
+                    [
+                        [
+                            exo.distance_from_exo
+                        ]
+                    ],
+                    dtype=torch.float,
+                )
+                edge_features = torch.cat((edge_features, e_attribute), dim=0)
+                edge_features = torch.cat((edge_features, e_attribute), dim=0)
+
+                index+=1
+                
+            graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
+            graph_list.append(graph)
+        return graph_list
     
     def create_sequences(self,graph_array,sequence_length):
         sequences = [graph_array[i:i + sequence_length] for i in range(0, len(graph_array), sequence_length)]
