@@ -1,0 +1,254 @@
+{
+    "frame 0": {
+        "vehicle EGO": {
+            "ID": "EGO",
+            "Type": "EGO",
+            "Traffic_Light_State": "None",
+            "Distance_from_ego": 0,
+            "Rotation": {
+                "pitch": -0.28387629985809326,
+                "yaw": -179.9697265625,
+                "roll": 0.01973831094801426
+            },
+            "Lane": "Driving",
+            "Position": {
+                "x": 0.44438979029655457,
+                "y": 133.72207641601562,
+                "z": -0.0013949584681540728
+            },
+            "Velocity": {
+                "x": -5.900035381317139,
+                "y": -0.0004371851682662964,
+                "z": -3.624915916589089e-05
+            },
+            "Dimensions": null,
+            "relative_position": null,
+            "relative_direction": null,
+            "relative_location": null,
+            "relative_movement_direction": null,
+            "position": {
+                "x": 0.44438979029655457,
+                "y": 133.72207641601562,
+                "z": -0.0013949584681540728
+            },
+            "waypoint_location": {
+                "x": -3.554215908050537,
+                "y": 133.68922424316406,
+                "z": 0.0
+            },
+            "speed": 21.0,
+            "Lanechange": true,
+            "Turn": true,
+            "Next_direction": "hard left back",
+            "Is_Junction": false
+        },
+        "vehicle 27": {
+            "ID": 27,
+            "Type": "vehicle.mitsubishi.fusorosa",
+            "Traffic_Light_State": "None",
+            "Distance_from_ego": 28.545978197873424,
+            "Speed": 16.0,
+            "Rotation": {
+                "pitch": 0.257361501455307,
+                "yaw": -179.24472045898438,
+                "roll": 0.011448254808783531
+            },
+            "Lane": "Driving",
+            "Position": {
+                "x": -27.543163299560547,
+                "y": 16.63910484313965,
+                "z": -0.004658012185245752
+            },
+            "Velocity": {
+                "x": -4.382359981536865,
+                "y": -0.04771837592124939,
+                "z": 0.0003241252852603793
+            },
+            "Dimensions": {
+                "extent_x": 5.136342525482178,
+                "extent_y": 1.9720759391784668,
+                "extent_z": 2.1264240741729736
+            },
+            "relative_position": [
+                {
+                    "x": 23.160802841186523,
+                    "y": -16.68682289123535,
+                    "z": 0.0049821375869214535
+                }
+            ],
+            "relative_direction": {
+                "x": 0.8113508224487305,
+                "y": -0.5845595002174377,
+                "z": 0.00017453028704039752
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "position": {
+                "x": -27.543163299560547,
+                "y": 16.63910484313965,
+                "z": -0.004658012185245752
+            },
+            "waypoint_location": null,
+            "Lanechange": null,
+            "Turn": null,
+            "Next_direction": null,
+            "Is_Junction": null
+        },
+        "vehicle 34": {
+            "ID": 34,
+            "Type": "vehicle.mini.cooper_s",
+            "Traffic_Light_State": "None",
+            "Distance_from_ego": 31.937158667474186,
+            "Speed": 19.0,
+            "Rotation": {
+                "pitch": 0.0023495848290622234,
+                "yaw": 0.3317447900772095,
+                "roll": 0.0006543950876221061
+            },
+            "Lane": "Driving",
+            "Position": {
+                "x": -9.850123405456543,
+                "y": 28.161073684692383,
+                "z": 0.04281089827418327
+            },
+            "Velocity": {
+                "x": 5.250438690185547,
+                "y": 0.01940952241420746,
+                "z": -0.00016624449926894158
+            },
+            "Dimensions": {
+                "extent_x": 1.9029000997543335,
+                "extent_y": 0.9851378202438354,
+                "extent_z": 0.7375150918960571
+            },
+            "relative_position": [
+                {
+                    "x": 15.10056209564209,
+                    "y": -28.141664505004883,
+                    "z": -0.042977143079042435
+                }
+            ],
+            "relative_direction": {
+                "x": 0.47282108664512634,
+                "y": -0.881157398223877,
+                "z": -0.0013456783490255475
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "position": {
+                "x": -9.850123405456543,
+                "y": 28.161073684692383,
+                "z": 0.04281089827418327
+            },
+            "waypoint_location": null,
+            "Lanechange": null,
+            "Turn": null,
+            "Next_direction": null,
+            "Is_Junction": null
+        },
+        "vehicle 63": {
+            "ID": 63,
+            "Type": "vehicle.bmw.grandtourer",
+            "Traffic_Light_State": "None",
+            "Distance_from_ego": 24.340852671810197,
+            "Speed": 0.0,
+            "Rotation": {
+                "pitch": 0.004665018990635872,
+                "yaw": -179.84078979492188,
+                "roll": -0.003967284690588713
+            },
+            "Lane": "Driving",
+            "Position": {
+                "x": 20.45279312133789,
+                "y": 13.196208953857422,
+                "z": 0.06859344244003296
+            },
+            "Velocity": {
+                "x": -0.00018537479627411813,
+                "y": -0.00034110236447304487,
+                "z": 0.006524238269776106
+            },
+            "Dimensions": {
+                "extent_x": 2.3055028915405273,
+                "extent_y": 1.1208566427230835,
+                "extent_z": 0.8336379528045654
+            },
+            "relative_position": [
+                {
+                    "x": -20.452978134155273,
+                    "y": -13.196550369262695,
+                    "z": -0.062069203704595566
+                }
+            ],
+            "relative_direction": {
+                "x": -0.8402736783027649,
+                "y": -0.542156457901001,
+                "z": -0.0025500012561678886
+            },
+            "relative_location": "back left",
+            "relative_movement_direction": "away",
+            "position": {
+                "x": 20.45279312133789,
+                "y": 13.196208953857422,
+                "z": 0.06859344244003296
+            },
+            "waypoint_location": null,
+            "Lanechange": null,
+            "Turn": null,
+            "Next_direction": null,
+            "Is_Junction": null
+        },
+        "vehicle 67": {
+            "ID": 67,
+            "Type": "vehicle.audi.tt",
+            "Traffic_Light_State": "None",
+            "Distance_from_ego": 35.4526950356081,
+            "Speed": 0.0,
+            "Rotation": {
+                "pitch": 0.0,
+                "yaw": 0.15919795632362366,
+                "roll": 0.0
+            },
+            "Lane": "Driving",
+            "Position": {
+                "x": -25.51629638671875,
+                "y": 24.613134384155273,
+                "z": -0.08276273310184479
+            },
+            "Velocity": {
+                "x": -8.513895366490942e-09,
+                "y": 5.122491320008749e-10,
+                "z": -0.006475248374044895
+            },
+            "Dimensions": {
+                "extent_x": 2.0906050205230713,
+                "extent_y": 0.9970585703849792,
+                "extent_z": 0.6926480531692505
+            },
+            "relative_position": [
+                {
+                    "x": 25.51629638671875,
+                    "y": -24.613134384155273,
+                    "z": 0.07628748565912247
+                }
+            ],
+            "relative_direction": {
+                "x": 0.7197279930114746,
+                "y": -0.6942528486251831,
+                "z": 0.0021518105641007423
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "position": {
+                "x": -25.51629638671875,
+                "y": 24.613134384155273,
+                "z": -0.08276273310184479
+            },
+            "waypoint_location": null,
+            "Lanechange": null,
+            "Turn": null,
+            "Next_direction": null,
+            "Is_Junction": null
+        }
+    }
+}
