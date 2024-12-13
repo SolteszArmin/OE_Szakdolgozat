@@ -9,6 +9,7 @@ import sys
 import time
 import string
 import json
+import random
 import traceback
 import carla
 from collections import defaultdict
@@ -54,7 +55,7 @@ def generate_random_code(len):
 code=generate_random_code(4)
 data_path=f"dataGeneration/output/data/{code}/exp_{code}"
 os.makedirs(f"dataGeneration/output/data/{code}",exist_ok=True)
-with open(f"exp_{code}.json") as file:
+with open(f"exp_{code}.json","w") as file:
     ed={}
     json.dump(ed,file,indent=4)
 
@@ -215,25 +216,13 @@ def nex_waypoint(p1,p2):
         relative_position.z ** 2
     )
     
-    # Normalize the relative position vector to get direction
-    if distance != 0:
-        relative_direction = carla.Vector3D(
-            relative_position.x / distance,
-            relative_position.y / distance,
-            relative_position.z / distance
-        )
-    else:
-        # If the distance is zero, direction is undefined; return zero vector
-        relative_direction = carla.Vector3D(0.0, 0.0, 0.0)
     NONE_TRESHOLD=3
     SLIGHT_THRESHOLD = 15
     HARD_THRESHOLD = 75
-    
-    # Calculate angle in degrees
     angle = math.degrees(math.atan2(relative_position.y, relative_position.x))
     angle = abs(angle)  # Only care about the magnitude for this classification
     
-    # Determine intensity based on angle
+
     if angle<=NONE_TRESHOLD:
         intensity="straight"
     elif angle <= SLIGHT_THRESHOLD:
@@ -242,20 +231,15 @@ def nex_waypoint(p1,p2):
         intensity = "hard"
     else:
         intensity = "medium"
-    
-    # Determine primary directions
     relative_location = []
-    
-    
-    
     if intensity!='straight':
 
         if relative_position.y > 0:
             relative_location.append("right")
         elif relative_position.y < 0:
             relative_location.append("left")
-        
-        # Combine results with intensity
+        else:
+            intensity="straight"
     if relative_position.x > 0:
         relative_location.append("front")
     elif relative_position.x < 0:
