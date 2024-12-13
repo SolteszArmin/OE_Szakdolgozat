@@ -5,7 +5,7 @@ import torch
 
 class Predicter():
     def __init__(self, weights_path: str) -> None:
-        model = GATv2SequenceModel(13, 32, 1, 13)
+        model = GATv2SequenceModel(13, 16, 1, 4, 2)
         model.load_state_dict(torch.load(weights_path))
         model.eval()
         self.model = model

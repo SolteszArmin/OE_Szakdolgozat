@@ -8,7 +8,7 @@ import os
 app = FastAPI()
 data_processing = DatasetProcessing()
 model = Predicter(
-    os.path.join(os.getcwd(), "models", "neural_networks", "working", "trained.pth")
+    os.path.join(os.getcwd(), "models", "neural_networks", "working", "trained_60.pth")
 )
 
 
