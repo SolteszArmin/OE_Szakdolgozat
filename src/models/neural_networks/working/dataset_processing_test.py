@@ -91,7 +91,7 @@ class DatasetProcessing():
                     })
                 #e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
                 #edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
-                num_nodes = len(all_vehicle):
+                num_nodes = len(all_vehicle)
                 for i in range(num_nodes):
                     for j in range(num_nodes):
                         if i != j:
@@ -99,8 +99,8 @@ class DatasetProcessing():
                             pos_j = all_vehicle[j]["pos"]
 
                             dx = pos_i["x"] - pos_j["x"]
-                            dx = pos_i["y"] - pos_j["y"]
-                            dx = pos_i["z"] - pos_j["z"]
+                            dy = pos_i["y"] - pos_j["y"]
+                            dz = pos_i["z"] - pos_j["z"]
                             distance = math.sqrt(dx**2 + dy**2 + dz**2)
 
                             if distance < 30.0:
@@ -125,7 +125,7 @@ class DatasetProcessing():
                                     ]],
                                     dtype=torch.float,
                                 )
-                                edge_features = torch.cat((edge_features, e_attr), dim=0)
+                                edge_features = torch.cat((edge_features, edge_attr), dim=0)
 
 
                 # num_nodes = nodes.size(0)
@@ -139,7 +139,7 @@ class DatasetProcessing():
                 graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
                 graph_list.append(graph)
 
-    return graph_list
+        return graph_list
     
 
     def modified(self,dict_list: list):
@@ -158,7 +158,7 @@ class DatasetProcessing():
                 ego_position=ego["Position"]
                 ego_velocity=ego["Velocity"]
                 ego_trafic_l_state=self.mapper_d["Traffic_Light_State"][ego["Traffic_Light_State"]]
-
+                ego_id = value["ID"]
                 ego_node = torch.tensor(
                     [
                         [
@@ -180,7 +180,7 @@ class DatasetProcessing():
                     dtype=torch.float,
                 )
                 nodes = torch.cat((nodes, ego_node), dim=0)
-                
+                vehicle_ids =[ego_id]
                 all_agents = [{
                     "index": 0,
                     "pos": ego_position,
@@ -190,6 +190,7 @@ class DatasetProcessing():
                 }]
 
                 for idx, (key, value) in enumerate(v.items(), start=1):
+                    exo_id = value["ID"]
                     exo_rotation=value["Rotation"]
                     exo_position=value["position"][0]
                     exo_velocity=value["Velocity"]
@@ -219,12 +220,13 @@ class DatasetProcessing():
                         dtype=torch.float,
                     )
                     nodes = torch.cat((nodes, exo_node), dim=0)
+                    vehicle_ids.append(exo_id)
                     all_agents.append({
                         "index": idx,
                         "pos": exo_position,
-                        "dir":  {"x": 0, "y": 0, "z": 0},,
-                        "node_data": exo_node
-                        "is_ego": False
+                        "dir":  {"x": 0, "y": 0, "z": 0},
+                        "node_data": exo_node,
+                        "is_ego": False,
                         "label": [value["Lanechange"], value["Turn"]] #placeholder
                     })
 
@@ -248,7 +250,7 @@ class DatasetProcessing():
                                         edge_features = torch.cat((edge_features, edge_attr), dim=0)
                 
                 node_labels = []
-                for agent in all_agent:
+                for agent in all_agents:
                     if agent.get("is_ego", False):
                         node_labels.append(None)
                     else:
@@ -264,13 +266,13 @@ class DatasetProcessing():
                 # graph = Data(x=nodes, edge_index=edges_reshaped, edge_attr=edge_attributes)
                 # # TEST-------------------------
 
-                graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
+                graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features, node_ids=vehicle_ids)
                 transform=NormalizeFeatures()
                 graph=transform(graph)
                 graph_list.append(graph)
                 label_list.append(node_labels)
 
-    return graph_list, label_list
+        return graph_list, label_list
     
     def create_graph_from_api(self, frames:InputFormat):
         graph_list=[]
@@ -299,6 +301,7 @@ class DatasetProcessing():
                 ],
                 dtype=torch.float,
             )
+            
             nodes = torch.cat((nodes, ego_node), dim=0)
             all_agents = [{
                 "index": 0,
@@ -352,16 +355,16 @@ class DatasetProcessing():
                         dy = pos_i["y"] - pos_j["y"]
                         dz = pos_i["z"] - pos_j["z"]
                         distance = math.sqrt(dx**2 + dy**2 + dz**2)
-                         if distance < 30.0:
-                                            edge_indexes = torch.cat(
-                                               (edge_indexes, torch.tensor([[i], [j]], dtype=torch.long)), dim=1
-                                            )
-                                            edge_attr = torch.tensor([[distance]], dtype=torch.float)
-                                            edge_features = torch.cat((edge_features, edge_attr), dim=0)
-                                            edge_features = torch.cat((edge_features, edge_attr), dim=0)
+                        if distance < 30.0:
+                            edge_indexes = torch.cat(
+                               (edge_indexes, torch.tensor([[i], [j]], dtype=torch.long)), dim=1
+                            )
+                            edge_attr = torch.tensor([[distance]], dtype=torch.float)
+                            edge_features = torch.cat((edge_features, edge_attr), dim=0)
+                            edge_features = torch.cat((edge_features, edge_attr), dim=0)
     
                     
-            graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
+            graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features, node_ids=vehicle_ids)
             graph_list.append(graph)
         return graph_list
     
