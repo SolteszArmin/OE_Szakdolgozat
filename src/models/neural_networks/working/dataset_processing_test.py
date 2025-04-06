@@ -155,7 +155,7 @@ class DatasetProcessing():
                 v = dict(v)
                 ego = v.pop("vehicle EGO",False)
                 ego_rotation=ego["Rotation"]
-                ego_position=ego["Position"]
+                ego_position=ego["relative_Position"]
                 ego_velocity=ego["Velocity"]
                 ego_trafic_l_state=self.mapper_d["Traffic_Light_State"][ego["Traffic_Light_State"]]
 
