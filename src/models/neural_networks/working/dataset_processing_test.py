@@ -139,7 +139,7 @@ class DatasetProcessing():
                 graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
                 graph_list.append(graph)
 
-        return graph_list
+    return graph_list
     
 
     def modified(self,dict_list: list):
@@ -270,7 +270,7 @@ class DatasetProcessing():
                 graph_list.append(graph)
                 label_list.append(node_labels)
 
-        return graph_list, label_list
+    return graph_list, label_list
     
     def create_graph_from_api(self, frames:InputFormat):
         graph_list=[]
@@ -300,8 +300,16 @@ class DatasetProcessing():
                 dtype=torch.float,
             )
             nodes = torch.cat((nodes, ego_node), dim=0)
-            index = 1
-            for exo in frame.exo_vehicles:
+            all_agents = [{
+                "index": 0,
+                "pos": {
+                    "x": frame.ego_position_x,
+                    "y": frame.ego_position_y,
+                    "z": frame.ego_position_z,
+                },
+                "node_data": ego_node
+            }]
+            for idx, exo in enumerate(frame.exo_vehicles, start=1):
                 exo_node = torch.tensor(
                     [
                         [
@@ -324,21 +332,35 @@ class DatasetProcessing():
                 )
                 nodes = torch.cat((nodes, exo_node), dim=0)
                 
-                e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
-                edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
-                e_attribute = torch.tensor(
-                    [
-                        [
-                            exo.distance_from_exo
-                        ]
-                    ],
-                    dtype=torch.float,
-                )
-                edge_features = torch.cat((edge_features, e_attribute), dim=0)
-                edge_features = torch.cat((edge_features, e_attribute), dim=0)
-
-                index+=1
-                
+                all_agents.append({
+                    "index": idx,
+                    "pos": {
+                        "x": exo.exo_position_x,
+                        "y": exo.exo_position_y,
+                        "z": exo.exo_position_z
+                    },
+                    "node_data": exo_node
+                })
+            num_nodes = len(all_agents)
+            for i in range(num_nodes):
+                for j in range(num_nodes):
+                    if i != j:
+                        pos_i = all_agents[i]["pos"]
+                        pos_j = all_agents[j]["pos"]
+    
+                        dx = pos_i["x"] - pos_j["x"]
+                        dy = pos_i["y"] - pos_j["y"]
+                        dz = pos_i["z"] - pos_j["z"]
+                        distance = math.sqrt(dx**2 + dy**2 + dz**2)
+                         if distance < 30.0:
+                                            edge_indexes = torch.cat(
+                                               (edge_indexes, torch.tensor([[i], [j]], dtype=torch.long)), dim=1
+                                            )
+                                            edge_attr = torch.tensor([[distance]], dtype=torch.float)
+                                            edge_features = torch.cat((edge_features, edge_attr), dim=0)
+                                            edge_features = torch.cat((edge_features, edge_attr), dim=0)
+    
+                    
             graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features)
             graph_list.append(graph)
         return graph_list
