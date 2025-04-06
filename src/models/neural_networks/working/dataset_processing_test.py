@@ -1,4 +1,5 @@
 import torch
+import math
 # PyTorch Geometric imports
 from torch_geometric.data import Data
 from torch_geometric.transforms import NormalizeFeatures
@@ -28,6 +29,8 @@ class DatasetProcessing():
             edge_features = torch.tensor([], dtype=torch.float)
             k = str(k)
             v = dict(v)
+            all_vehicle = []
+
             ego = v.pop("ego_vehicle")
             ego_pos = ego["position"]
             ego_wayp = ego["waypoint_location"]
@@ -49,8 +52,14 @@ class DatasetProcessing():
                 dtype=torch.float,
             )
             nodes = torch.cat((nodes, ego_node), dim=0)
-            index = 1
-            for key, value in v.items():
+            all_vehicle.append({
+                    "index": 0,
+                    "pos": ego_pos,
+                    "dir": {"x": 0, "y": 0, "z": 0},
+                    "node_data": ego_node
+                    })
+
+            for idx, (key, value) in enumerate(v.items(), start=1):
                 exo_pos = value["Position"]
                 exo_rotation = value["Rotation"]
                 exo_velocity = value["Velocity"]
@@ -74,23 +83,49 @@ class DatasetProcessing():
                     dtype=torch.float,
                 )
                 nodes = torch.cat((nodes, exo_node), dim=0)
-                e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
-                edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
-                e_attribute = torch.tensor(
-                    [
-                        [
-                            exo_rel_pos["x"],
-                            exo_rel_pos["y"],
-                            exo_rel_pos["z"],
-                            exo_rel_dir["x"],
-                            exo_rel_dir["y"],
-                            exo_rel_dir["z"],
-                        ]
-                    ],
-                    dtype=torch.float,
-                )
-                edge_features = torch.cat((edge_features, e_attribute), dim=0)
-                edge_features = torch.cat((edge_features, e_attribute), dim=0)
+                all_vehicle.append({
+                    "index": idx,
+                    "pos": exo_pos,
+                    "dir": exo_rel_dir,
+                    "node_data": exo_node
+                    })
+                #e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
+                #edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
+                num_nodes = len(all_vehicle):
+                for i in range(num_nodes):
+                    for j in range(num_nodes):
+                        if i != j:
+                            pos_i = all_vehicle[i]["pos"]
+                            pos_j = all_vehicle[j]["pos"]
+
+                            dx = pos_i["x"] - pos_j["x"]
+                            dx = pos_i["y"] - pos_j["y"]
+                            dx = pos_i["z"] - pos_j["z"]
+                            distance = math.sqrt(dx**2 + dy**2 + dz**2)
+
+                            if distance < 30.0:
+                                edge_indexes = torch.cat(
+                                    (edge_indexes, torch.tensor([[i], [j]], dtype=torch.long)), dim=1
+                                )
+
+                                rel_pos = {
+                                    "x": pos_j["x"] - pos_i["x"],
+                                    "y": pos_j["y"] - pos_i["y"],
+                                    "z": pos_j["z"] - pos_i["z"],
+                                }
+                                rel_dir = all_vehicle[j]["dir"]
+                                edge_attr = torch.tensor(
+                                    [[
+                                        rel_pos["x"],
+                                        rel_pos["y"],
+                                        rel_pos["z"],
+                                        rel_dir["x"],
+                                        rel_dir["y"],
+                                        rel_dir["z"],
+                                    ]],
+                                    dtype=torch.float,
+                                )
+                                edge_features = torch.cat((edge_features, e_attr), dim=0)
 
 
                 # num_nodes = nodes.size(0)
@@ -124,15 +159,6 @@ class DatasetProcessing():
                 ego_velocity=ego["Velocity"]
                 ego_trafic_l_state=self.mapper_d["Traffic_Light_State"][ego["Traffic_Light_State"]]
 
-                ego_lanechange= 1 if ego["Lanechange"] else 0
-                ego_turn= 1 if ego["Turn"] else 0 
-                ego_next_dir=self.mapper_d["Next_direction"][ego["Next_direction"]]
-                if (self.mapper_d["Next_direction"][ego["Next_direction"]]!=0 ) and (self.mapper_d["Next_direction"][ego["Next_direction"]]!=1) and (self.mapper_d["Next_direction"][ego["Next_direction"]]!=2) and (self.mapper_d["Next_direction"][ego["Next_direction"]]!=3):
-                    continue
-
-
-                label_list.append((ego_next_dir,[ego_lanechange, ego_turn]))
-
                 ego_node = torch.tensor(
                     [
                         [
@@ -154,10 +180,18 @@ class DatasetProcessing():
                     dtype=torch.float,
                 )
                 nodes = torch.cat((nodes, ego_node), dim=0)
-                index = 1
-                for key, value in v.items():
+                
+                all_agents = [{
+                    "index": 0,
+                    "pos": ego_position,
+                    "dir": {"x": 0, "y": 0, "z": 0},
+                    "node_data": ego_node,
+                    "is_ego": True
+                }]
+
+                for idx, (key, value) in enumerate(v.items(), start=1):
                     exo_rotation=value["Rotation"]
-                    exo_position=value["relative_position"][0]
+                    exo_position=value["position"][0]
                     exo_velocity=value["Velocity"]
                     exo_relative_location=self.mapper_d["relative_location"][value["relative_location"]]
                     exo_relative_movement_dir=self.mapper_d["relative_movement_direction"][value["relative_movement_direction"]]
@@ -185,21 +219,41 @@ class DatasetProcessing():
                         dtype=torch.float,
                     )
                     nodes = torch.cat((nodes, exo_node), dim=0)
-                    e_index = torch.tensor([[0, index], [index, 0]], dtype=torch.long)
-                    edge_indexes = torch.cat((edge_indexes, e_index), dim=1)
-                    e_attribute = torch.tensor(
-                        [
-                            [
-                                value["Distance_from_ego"]
-                            ]
-                        ],
-                        dtype=torch.float,
-                    )
-                    edge_features = torch.cat((edge_features, e_attribute), dim=0)
-                    edge_features = torch.cat((edge_features, e_attribute), dim=0)
+                    all_agents.append({
+                        "index": idx,
+                        "pos": exo_position,
+                        "dir":  {"x": 0, "y": 0, "z": 0},,
+                        "node_data": exo_node
+                        "is_ego": False
+                        "label": [value["Lanechange"], value["Turn"]] #placeholder
+                    })
 
-                    index += 1
+                    num_nodes = len(all_agents)
+                    for i in range(num_nodes):
+                        for j in range(num_nodes):
+                            if i != j:
+                                pos_i = all_agents[i]["pos"]
+                                pos_j = all_agents[j]["pos"]
+
+                                dx = pos_i["x"] - pos_j["x"]
+                                dy = pos_i["y"] - pos_j["y"]
+                                dz = pos_i["z"] - pos_j["z"]
+                                distance = math.sqrt(dx**2 + dy**2 + dz**2)
+                                if distance < 30.0:
+                                        edge_indexes = torch.cat(
+                                           (edge_indexes, torch.tensor([[i], [j]], dtype=torch.long)), dim=1
+                                        )
+                                        edge_attr = torch.tensor([[distance]], dtype=torch.float)
+                                        edge_features = torch.cat((edge_features, edge_attr), dim=0)
+                                        edge_features = torch.cat((edge_features, edge_attr), dim=0)
                 
+                node_labels = []
+                for agent in all_agent:
+                    if agent.get("is_ego", False):
+                        node_labels.append(None)
+                    else:
+                        label = [int(agent["label"][0]), int(agent["label"][1])]
+                        node_labels.append(label)
                 # # TEST------------------------------
                 # num_nodes = nodes.size(0)
                 # edges = torch.cartesian_prod(torch.arange(num_nodes), torch.arange(num_nodes))
@@ -214,6 +268,7 @@ class DatasetProcessing():
                 transform=NormalizeFeatures()
                 graph=transform(graph)
                 graph_list.append(graph)
+                label_list.append(node_labels)
 
         return graph_list, label_list
     
