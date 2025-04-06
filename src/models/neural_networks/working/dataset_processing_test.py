@@ -192,7 +192,7 @@ class DatasetProcessing():
                 for idx, (key, value) in enumerate(v.items(), start=1):
                     exo_id = value["ID"]
                     exo_rotation=value["Rotation"]
-                    exo_position=value["position"][0]
+                    exo_position=value["relative_position"][0]
                     exo_velocity=value["Velocity"]
                     exo_relative_location=self.mapper_d["relative_location"][value["relative_location"]]
                     exo_relative_movement_dir=self.mapper_d["relative_movement_direction"][value["relative_movement_direction"]]
