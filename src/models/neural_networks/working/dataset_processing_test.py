@@ -158,7 +158,7 @@ class DatasetProcessing():
                 ego_position=ego["Position"]
                 ego_velocity=ego["Velocity"]
                 ego_trafic_l_state=self.mapper_d["Traffic_Light_State"][ego["Traffic_Light_State"]]
-                ego_id = value["ID"]
+                ego_id = ego["ID"]
                 ego_node = torch.tensor(
                     [
                         [
@@ -303,6 +303,7 @@ class DatasetProcessing():
             )
             
             nodes = torch.cat((nodes, ego_node), dim=0)
+            vehicle_ids = frame.ego_ID
             all_agents = [{
                 "index": 0,
                 "pos": {
@@ -334,7 +335,7 @@ class DatasetProcessing():
                     dtype=torch.float,
                 )
                 nodes = torch.cat((nodes, exo_node), dim=0)
-                
+                vehicle_ids.append(exo.exo_ID)
                 all_agents.append({
                     "index": idx,
                     "pos": {
