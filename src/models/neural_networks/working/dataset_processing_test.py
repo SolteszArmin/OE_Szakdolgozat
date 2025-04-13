@@ -4,7 +4,7 @@ import math
 from torch_geometric.data import Data
 from torch_geometric.transforms import NormalizeFeatures
 import json
-from api_request_types.request_models import InputFormat
+#from api_request_types.request_models import InputFormat
 import os
 
 # For debugging or general utilities (optional)
@@ -249,13 +249,12 @@ class DatasetProcessing():
                                         edge_features = torch.cat((edge_features, edge_attr), dim=0)
                                         edge_features = torch.cat((edge_features, edge_attr), dim=0)
                 
-                node_labels = []
+                graph_labels = []
                 for agent in all_agents:
-                    if agent.get("is_ego", False):
-                        node_labels.append(None)
-                    else:
-                        label = [int(agent["label"][0]), int(agent["label"][1])]
-                        node_labels.append(label)
+                    if not agent.get("is_ego", False):
+                        graph_labels.append(agent["label"])
+                graph_labels.insert(0, None) 
+
                 # # TEST------------------------------
                 # num_nodes = nodes.size(0)
                 # edges = torch.cartesian_prod(torch.arange(num_nodes), torch.arange(num_nodes))
@@ -270,11 +269,11 @@ class DatasetProcessing():
                 transform=NormalizeFeatures()
                 graph=transform(graph)
                 graph_list.append(graph)
-                label_list.append(node_labels)
+                label_list.append(graph_labels)
 
         return graph_list, label_list
     
-    def create_graph_from_api(self, frames:InputFormat):
+#    def create_graph_from_api(self, frames:InputFormat):
         graph_list=[]
 
         for frame in frames.frames:
@@ -368,7 +367,7 @@ class DatasetProcessing():
             graph = Data(x=nodes, edge_index=edge_indexes, edge_attr=edge_features, node_ids=vehicle_ids)
             graph_list.append(graph)
         return graph_list
-    
+#    
     def create_sequences(self,graph_array,sequence_length):
         sequences = [graph_array[i:i + sequence_length] for i in range(0, len(graph_array), sequence_length)]
         return sequences
