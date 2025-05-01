@@ -142,7 +142,7 @@ class DatasetProcessing():
         return graph_list
     
 
-    def modified(self,dict_list: list):
+    def modified(self,dict_list: list,edge_dist=8.0):
         # label list is a list of tuple(nextdir, [lanechange,turn])
         graph_list = []
         label_list=[]
@@ -241,7 +241,7 @@ class DatasetProcessing():
                                 dy = pos_i["y"] - pos_j["y"]
                                 dz = pos_i["z"] - pos_j["z"]
                                 distance = math.sqrt(dx**2 + dy**2 + dz**2)
-                                if distance < 30.0:
+                                if distance < edge_dist:
                                         edge_indexes = torch.cat(
                                            (edge_indexes, torch.tensor([[i], [j]], dtype=torch.long)), dim=1
                                         )
@@ -273,7 +273,7 @@ class DatasetProcessing():
 
         return graph_list, label_list
     
-#    def create_graph_from_api(self, frames:InputFormat):
+#    def create_graph_from_api(self, frames:InputFormat, edge_dist=8:.):
         graph_list=[]
 
         for frame in frames.frames:
@@ -355,7 +355,7 @@ class DatasetProcessing():
                         dy = pos_i["y"] - pos_j["y"]
                         dz = pos_i["z"] - pos_j["z"]
                         distance = math.sqrt(dx**2 + dy**2 + dz**2)
-                        if distance < 30.0:
+                        if distance < edge_dist:
                             edge_indexes = torch.cat(
                                (edge_indexes, torch.tensor([[i], [j]], dtype=torch.long)), dim=1
                             )
