@@ -12,22 +12,20 @@
         "towards": 0,
         "away": 1
     },
-    "Next_direction": {
-        "hard right back": 0,
-        "hard left front": 1,
-        "hard left back": 2,
-        "straight front": 3,
-        "hard right front": 4,
-        "slight right front": 5,
-        "slight right back": 6,
-        "slight left front": 7,
-        "slight left back": 8,
-        "straight back": 9,
-        "straight right front":10,
-        "medium left front":11,
-        "medium right front":12,
-        "medium left back":13,
-        "medium right back":14
+    "next_action": {
+        "straight": 0,
+        "intersection_straight": 1,
+        "turn_right": 2,
+        "turn_left": 3,
+        "lane_change_left": 4,
+        "lane_change_right": 5
+    },
+    "speed_change": {
+        "starting": 0,
+        "accelerating": 1,
+        "stopping": 2,
+        "decelerating": 3,
+        "maintaining speed": 4
     },
     "Traffic_Light_State": {
         "None": 0,

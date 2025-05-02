@@ -158,7 +158,7 @@ class DatasetProcessing():
                 ego_position=ego["Position"]
                 ego_velocity=ego["Velocity"]
                 ego_trafic_l_state=self.mapper_d["Traffic_Light_State"][ego["Traffic_Light_State"]]
-                ego_id = ego["ID"]
+                ego_id = ego["id"]
                 ego_node = torch.tensor(
                     [
                         [
@@ -171,7 +171,7 @@ class DatasetProcessing():
                             ego_velocity["x"],
                             ego_velocity["y"],
                             ego_velocity["z"],
-                            ego["speed"],
+                            ego["Speed"],
                             ego_trafic_l_state,
                             0,
                             0
@@ -190,13 +190,15 @@ class DatasetProcessing():
                 }]
 
                 for idx, (key, value) in enumerate(v.items(), start=1):
-                    exo_id = value["ID"]
+                    exo_id = value["id"]
                     exo_rotation=value["Rotation"]
                     exo_position=value["relative_position"][0]
                     exo_velocity=value["Velocity"]
                     exo_relative_location=self.mapper_d["relative_location"][value["relative_location"]]
                     exo_relative_movement_dir=self.mapper_d["relative_movement_direction"][value["relative_movement_direction"]]
                     exo_trafic_l_state=self.mapper_d["Traffic_Light_State"][value["Traffic_Light_State"]]
+                    next_action = self.mapper_d["next_action"][value["labels"]["next_action"]]
+                    speed_change = self.mapper_d["speed_change"][value["labels"]["speed_change"]]
 
 
                     exo_node = torch.tensor(
@@ -227,7 +229,7 @@ class DatasetProcessing():
                         "dir":  {"x": 0, "y": 0, "z": 0},
                         "node_data": exo_node,
                         "is_ego": False,
-                        "label": [value["Lanechange"], value["Turn"]] #placeholder
+                        "label": [next_action, speed_change] #placeholder
                     })
 
                     num_nodes = len(all_agents)
