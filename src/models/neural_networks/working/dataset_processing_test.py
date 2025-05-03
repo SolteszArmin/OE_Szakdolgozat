@@ -377,5 +377,5 @@ class DatasetProcessing():
     
     def create_sequence_and_labels(self,graph_array,label_list,sequence_length):
         sequences = [graph_array[i:i + sequence_length] for i in range(0, len(graph_array), sequence_length)]
-        labels=label_list[::sequence_length]
+        labels = [label_list[i + sequence_length - 1] for i in range(0, len(graph_array), sequence_length) if i + sequence_length - 1 < len(label_list)]
         return sequences,labels
