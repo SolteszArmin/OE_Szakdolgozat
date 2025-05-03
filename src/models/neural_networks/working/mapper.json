@@ -24,8 +24,9 @@
         "starting": 0,
         "accelerating": 1,
         "stopping": 2,
-        "decelerating": 3,
-        "maintaining speed": 4
+        "standing_still": 3,
+        "decelerating": 4,
+        "maintaining speed": 5
     },
     "Traffic_Light_State": {
         "None": 0,
