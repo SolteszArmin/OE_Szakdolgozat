@@ -252,10 +252,11 @@ class DatasetProcessing():
                                         edge_features = torch.cat((edge_features, edge_attr), dim=0)
                 
                 graph_labels = []
+                graph_labels.insert(0, None) 
                 for agent in all_agents:
                     if not agent.get("is_ego", False):
                         graph_labels.append(agent["label"])
-                graph_labels.insert(0, None) 
+                
 
                 # # TEST------------------------------
                 # num_nodes = nodes.size(0)
