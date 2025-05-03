@@ -153,11 +153,11 @@ class DatasetProcessing():
                 edge_features = torch.tensor([], dtype=torch.float)
                 k = str(k)
                 v = dict(v)
-                ego = v.pop("vehicle EGO",False)
+                ego = v.pop("ego",False)
                 ego_rotation=ego["Rotation"]
                 ego_position=ego["Position"]
                 ego_velocity=ego["Velocity"]
-                ego_trafic_l_state=self.mapper_d["Traffic_Light_State"][ego["Traffic_Light_State"]]
+                ego_trafic_l_state=self.mapper_d["Traffic_Light_State"][ego["Traffic_light_state"]]
                 ego_id = ego["id"]
                 ego_node = torch.tensor(
                     [
@@ -165,12 +165,12 @@ class DatasetProcessing():
                             ego_rotation["pitch"],
                             ego_rotation["yaw"],
                             ego_rotation["roll"],
-                            ego_position["x"],
-                            ego_position["y"],
-                            ego_position["z"],
-                            ego_velocity["x"],
-                            ego_velocity["y"],
-                            ego_velocity["z"],
+                            ego_position["Y"],
+                            ego_position["Y"],
+                            ego_position["Z"],
+                            ego_velocity["X"],
+                            ego_velocity["Y"],
+                            ego_velocity["Z"],
                             ego["Speed"],
                             ego_trafic_l_state,
                             0,
@@ -192,11 +192,11 @@ class DatasetProcessing():
                 for idx, (key, value) in enumerate(v.items(), start=1):
                     exo_id = value["id"]
                     exo_rotation=value["Rotation"]
-                    exo_position=value["relative_position"][0]
+                    exo_position=value["relative_position"]
                     exo_velocity=value["Velocity"]
                     exo_relative_location=self.mapper_d["relative_location"][value["relative_location"]]
                     exo_relative_movement_dir=self.mapper_d["relative_movement_direction"][value["relative_movement_direction"]]
-                    exo_trafic_l_state=self.mapper_d["Traffic_Light_State"][value["Traffic_Light_State"]]
+                    exo_trafic_l_state=self.mapper_d["Traffic_Light_State"][value["Traffic_light_state"]]
                     next_action = self.mapper_d["next_action"][value["labels"]["next_action"]]
                     speed_change = self.mapper_d["speed_change"][value["labels"]["speed_change"]]
 
@@ -207,12 +207,12 @@ class DatasetProcessing():
                                 exo_rotation["pitch"],
                                 exo_rotation["yaw"],
                                 exo_rotation["roll"],
-                                exo_position["x"],
-                                exo_position["y"],
-                                exo_position["z"],
-                                exo_velocity["x"],
-                                exo_velocity["y"],
-                                exo_velocity["z"],
+                                exo_position["X"],
+                                exo_position["Y"],
+                                exo_position["Z"],
+                                exo_velocity["X"],
+                                exo_velocity["Y"],
+                                exo_velocity["Z"],
                                 value["Speed"],
                                 exo_trafic_l_state,
                                 exo_relative_location,
@@ -239,9 +239,9 @@ class DatasetProcessing():
                                 pos_i = all_agents[i]["pos"]
                                 pos_j = all_agents[j]["pos"]
 
-                                dx = pos_i["x"] - pos_j["x"]
-                                dy = pos_i["y"] - pos_j["y"]
-                                dz = pos_i["z"] - pos_j["z"]
+                                dx = pos_i["X"] - pos_j["X"]
+                                dy = pos_i["Y"] - pos_j["Y"]
+                                dz = pos_i["Z"] - pos_j["Z"]
                                 distance = math.sqrt(dx**2 + dy**2 + dz**2)
                                 if distance < edge_dist:
                                         edge_indexes = torch.cat(
