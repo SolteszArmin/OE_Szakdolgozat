@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api_request_types.request_models import InputFormat
+from api_request_types.request_models import InputDataFormat
 from models.neural_networks.working.dataset_processing import DatasetProcessing
 from api_request_types.model import Predicter
 import json
@@ -8,7 +8,7 @@ import os
 app = FastAPI()
 data_processing = DatasetProcessing()
 model = Predicter(
-    os.path.join(os.getcwd(), "models", "neural_networks", "working", "trained_60.pth")
+    os.path.join(os.getcwd(), "models", "neural_networks", "working", "trained_model.pth")
 )
 
 
@@ -18,17 +18,14 @@ def read_root():
 
 
 @app.post("/items/")
-def read_item(input_data: InputFormat):
-    graph_list = data_processing.create_graph_from_api(input_data)
-    predicted_class, predicted_bool = model.predict(graph_list)
+def read_item(input_data: InputDataFormat):
+    input_data_dict = input_data.model_dump()
+    predicted_next_move, predicted_speed_change, returned_node_ids = model.predict(input_data_dict)
 
-    class_number = predicted_class.item()
-    lane_change = bool(predicted_bool[0, 0].item())
-    turn = bool(predicted_bool[0, 1].item())
     result_dict = {
-        "predicted_class": class_number,
-        "lane_change": lane_change,
-        "turn": turn,
+        "predicted_next_action": predicted_next_move,
+        "predicted_speed_change": predicted_speed_change,
+        "ids": returned_node_ids,
     }
     a = json.dumps(result_dict)
     return a

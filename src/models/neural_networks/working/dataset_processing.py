@@ -107,7 +107,7 @@ class DatasetProcessing():
         return graph_list
     
 
-    def modified(self,dict_list: list):
+    def create_graph_and_labels(self,dict_list: list):
         # label list is a list of tuple(nextdir, [lanechange,turn])
         graph_list = []
         label_list=[]

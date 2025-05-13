@@ -19,14 +19,6 @@ class GATv2SequenceModel(torch.nn.Module):
 
         self.bn1 = BatchNorm1d(hidden_channels * heads)
         self.bn2 = BatchNorm1d(32*heads)
-
-        # GRU for Sequence Processing
-        # self.gru = torch.nn.GRU(
-        #     hidden_channels,
-        #     hidden_channels,
-        #     batch_first=True,
-        #     bidirectional=True,
-        # )
         self.lstm = torch.nn.LSTM(
             32*heads, hidden_channels, batch_first=True, bidirectional=False
         )

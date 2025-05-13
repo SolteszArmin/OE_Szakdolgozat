@@ -5,38 +5,6 @@ from torch_geometric.data import Data
 from torch_geometric.nn import GCNConv
 import numpy as np
 
-def create_pytorch_graph(num_nodes, num_node_attrs):
-    """
-    Creates a PyTorch Geometric graph with random node features and edge connections.
-    
-    Args:
-        num_nodes (int): Number of nodes in the graph
-        num_node_attrs (int): Number of attributes/features per node
-        
-    Returns:
-        torch_geometric.data.Data: A PyTorch Geometric graph object
-    """
-    # Create random node features
-    x = torch.randn(num_nodes, num_node_attrs)
-    
-    # Create random edge connections (fully connected graph for simplicity)
-    # For a more realistic graph, you might want to customize this part
-    edge_index = []
-    for i in range(num_nodes):
-        for j in range(num_nodes):
-            if i != j:  # Avoid self-loops
-                edge_index.append([i, j])
-    
-    edge_index = torch.tensor(edge_index, dtype=torch.long).t().contiguous()
-    
-    # Create random edge attributes (optional)
-    edge_attr = torch.randn(edge_index.size(1), 1)
-    
-    # Create the graph
-    graph = Data(x=x, edge_index=edge_index, edge_attr=edge_attr)
-    
-    return graph
-
 class GNNEncoder(nn.Module):
     """
     Graph Neural Network encoder that processes individual graphs.

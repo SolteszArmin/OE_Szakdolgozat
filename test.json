@@ -1,0 +1,548 @@
+{
+    "0": {
+        "ego": {
+            "id": "ego",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": null,
+            "relative_direction": null,
+            "relative_location": null,
+            "relative_movement_direction": null,
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7166": {
+            "id": "7166",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.93084144592285,
+                "Y": -20.30195426940918,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.8438538908958435,
+                "Y": -0.5365309119224548,
+                "Z": -0.006719306111335754
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7174": {
+            "id": "7174",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.636356353759766,
+                "Y": -33.58928680419922,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.6856175065040588,
+                "Y": -0.72794109582901,
+                "Z": -0.005510144401341677
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        }
+    },
+    "1": {
+        "ego": {
+            "id": "ego",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": null,
+            "relative_direction": null,
+            "relative_location": null,
+            "relative_movement_direction": null,
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7166": {
+            "id": "7166",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.93084144592285,
+                "Y": -20.30195426940918,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.8438538908958435,
+                "Y": -0.5365309119224548,
+                "Z": -0.006719306111335754
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7174": {
+            "id": "7174",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.636356353759766,
+                "Y": -33.58928680419922,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.6856175065040588,
+                "Y": -0.72794109582901,
+                "Z": -0.005510144401341677
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        }
+    },
+    "2": {
+        "ego": {
+            "id": "ego",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": null,
+            "relative_direction": null,
+            "relative_location": null,
+            "relative_movement_direction": null,
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7166": {
+            "id": "7166",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.93084144592285,
+                "Y": -20.30195426940918,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.8438538908958435,
+                "Y": -0.5365309119224548,
+                "Z": -0.006719306111335754
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7174": {
+            "id": "7174",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.636356353759766,
+                "Y": -33.58928680419922,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.6856175065040588,
+                "Y": -0.72794109582901,
+                "Z": -0.005510144401341677
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        }
+    },
+    "3": {
+        "ego": {
+            "id": "ego",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": null,
+            "relative_direction": null,
+            "relative_location": null,
+            "relative_movement_direction": null,
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7166": {
+            "id": "7166",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.93084144592285,
+                "Y": -20.30195426940918,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.8438538908958435,
+                "Y": -0.5365309119224548,
+                "Z": -0.006719306111335754
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7174": {
+            "id": "7174",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.636356353759766,
+                "Y": -33.58928680419922,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.6856175065040588,
+                "Y": -0.72794109582901,
+                "Z": -0.005510144401341677
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        }
+    },
+    "4": {
+        "ego": {
+            "id": "ego",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": null,
+            "relative_direction": null,
+            "relative_location": null,
+            "relative_movement_direction": null,
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7166": {
+            "id": "7166",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.93084144592285,
+                "Y": -20.30195426940918,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.8438538908958435,
+                "Y": -0.5365309119224548,
+                "Z": -0.006719306111335754
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "7174": {
+            "id": "7174",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.636356353759766,
+                "Y": -33.58928680419922,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.6856175065040588,
+                "Y": -0.72794109582901,
+                "Z": -0.005510144401341677
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        },
+        "123": {
+            "id": "7174",
+            "Traffic_light_state": "Green",
+            "Speed": 0.7839999794960022,
+            "Rotation": {
+                "pitch": 0.0,
+                "roll": 0.0,
+                "yaw": 89.83876037597656
+            },
+            "Position": {
+                "X": -52.186737060546875,
+                "Y": 42.56512451171875,
+                "Z": 0.5970600247383118
+            },
+            "Velocity": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -0.19599999487400055
+            },
+            "relative_position": {
+                "X": 31.636356353759766,
+                "Y": -33.58928680419922,
+                "Z": -0.2542538344860077
+            },
+            "relative_direction": {
+                "X": 0.6856175065040588,
+                "Y": -0.72794109582901,
+                "Z": -0.005510144401341677
+            },
+            "relative_location": "front left",
+            "relative_movement_direction": "away",
+            "labels": {
+                "next_action": "intersection_straight",
+                "speed_change": "maintaining speed"
+            }
+        }
+    }
+}

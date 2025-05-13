@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr,RootModel
 
 
 class ExoVehicle(BaseModel):
@@ -34,3 +34,23 @@ class FrameFormat(BaseModel):
 
 class InputFormat(BaseModel):
     frames: list[FrameFormat]
+
+
+class VehicleData(BaseModel):
+    id: str
+    Traffic_light_state: str
+    Speed: float
+    Rotation: dict
+    Position: dict
+    Velocity: dict
+    relative_position: dict | None
+    relative_direction: dict | None
+    relative_location: str | None
+    relative_movement_direction: str | None
+    labels: dict
+
+class vehicles(RootModel):
+    root: dict[str, VehicleData]
+
+class InputDataFormat(RootModel):
+    root: dict[str, vehicles]
